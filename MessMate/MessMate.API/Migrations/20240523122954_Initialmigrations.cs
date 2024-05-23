@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MessMate.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initialmigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,10 +16,10 @@ namespace MessMate.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -33,26 +33,24 @@ namespace MessMate.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    Veg = table.Column<int>(type: "int", nullable: false),
-                    NonVeg = table.Column<int>(type: "int", nullable: false),
-                    Timings = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Rating = table.Column<float>(type: "real", nullable: false),
+                    Veg = table.Column<bool>(type: "bit", nullable: false),
+                    NonVeg = table.Column<bool>(type: "bit", nullable: false),
+                    Timings = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messs_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Messs_Users_OwnerId",
+                        column: x => x.OwnerId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -62,10 +60,12 @@ namespace MessMate.API.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MessId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<float>(type: "real", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MessId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,11 +77,20 @@ namespace MessMate.API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Feedbacks_Messs_MessId1",
+                        column: x => x.MessId1,
+                        principalTable: "Messs",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Feedbacks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_Users_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -91,12 +100,14 @@ namespace MessMate.API.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MessId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Plan = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    Plan = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MessId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,14 +116,22 @@ namespace MessMate.API.Migrations
                         name: "FK_Subscriptions_Messs_MessId",
                         column: x => x.MessId,
                         principalTable: "Messs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Subscriptions_Messs_MessId1",
+                        column: x => x.MessId1,
+                        principalTable: "Messs",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Subscriptions_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Subscriptions_Users_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -121,11 +140,12 @@ namespace MessMate.API.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MealType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MealType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SubscriptionId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -136,6 +156,11 @@ namespace MessMate.API.Migrations
                         principalTable: "Subscriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Meals_Subscriptions_SubscriptionId1",
+                        column: x => x.SubscriptionId1,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -144,9 +169,19 @@ namespace MessMate.API.Migrations
                 column: "MessId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_MessId1",
+                table: "Feedbacks",
+                column: "MessId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Feedbacks_UserId",
                 table: "Feedbacks",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_UserId1",
+                table: "Feedbacks",
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Meals_SubscriptionId",
@@ -154,9 +189,14 @@ namespace MessMate.API.Migrations
                 column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messs_UserId",
+                name: "IX_Meals_SubscriptionId1",
+                table: "Meals",
+                column: "SubscriptionId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messs_OwnerId",
                 table: "Messs",
-                column: "UserId");
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscriptions_MessId",
@@ -164,9 +204,19 @@ namespace MessMate.API.Migrations
                 column: "MessId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Subscriptions_MessId1",
+                table: "Subscriptions",
+                column: "MessId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Subscriptions_UserId",
                 table: "Subscriptions",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subscriptions_UserId1",
+                table: "Subscriptions",
+                column: "UserId1");
         }
 
         /// <inheritdoc />

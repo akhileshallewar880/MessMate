@@ -30,7 +30,8 @@ namespace MessMate.API.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -38,8 +39,11 @@ namespace MessMate.API.Migrations
                     b.Property<Guid>("MessId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("MessId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -47,11 +51,18 @@ namespace MessMate.API.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MessId");
 
+                    b.HasIndex("MessId1");
+
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Feedbacks");
                 });
@@ -65,18 +76,23 @@ namespace MessMate.API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MealType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<Guid>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SubscriptionId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -85,6 +101,8 @@ namespace MessMate.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SubscriptionId");
+
+                    b.HasIndex("SubscriptionId1");
 
                     b.ToTable("Meals");
                 });
@@ -100,36 +118,37 @@ namespace MessMate.API.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("NonVeg")
-                        .HasColumnType("int");
+                    b.Property<bool>("NonVeg")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
 
-                    b.Property<DateTime>("Timings")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Timings")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Veg")
-                        .HasColumnType("int");
+                    b.Property<bool>("Veg")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Messs");
                 });
@@ -143,21 +162,27 @@ namespace MessMate.API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("EndDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("MessId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("MessId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Plan")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -165,11 +190,18 @@ namespace MessMate.API.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MessId");
 
+                    b.HasIndex("MessId1");
+
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Subscriptions");
                 });
@@ -185,19 +217,23 @@ namespace MessMate.API.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -215,11 +251,19 @@ namespace MessMate.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MessMate.API.Models.Domain.Mess", null)
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("MessId1");
+
                     b.HasOne("MessMate.API.Models.Domain.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("MessMate.API.Models.Domain.User", null)
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Mess");
 
@@ -234,18 +278,22 @@ namespace MessMate.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MessMate.API.Models.Domain.Subscription", null)
+                        .WithMany("Meals")
+                        .HasForeignKey("SubscriptionId1");
+
                     b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("MessMate.API.Models.Domain.Mess", b =>
                 {
-                    b.HasOne("MessMate.API.Models.Domain.User", "User")
+                    b.HasOne("MessMate.API.Models.Domain.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("MessMate.API.Models.Domain.Subscription", b =>
@@ -253,18 +301,45 @@ namespace MessMate.API.Migrations
                     b.HasOne("MessMate.API.Models.Domain.Mess", "Mess")
                         .WithMany()
                         .HasForeignKey("MessId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("MessMate.API.Models.Domain.Mess", null)
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("MessId1");
 
                     b.HasOne("MessMate.API.Models.Domain.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("MessMate.API.Models.Domain.User", null)
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Mess");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MessMate.API.Models.Domain.Mess", b =>
+                {
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("MessMate.API.Models.Domain.Subscription", b =>
+                {
+                    b.Navigation("Meals");
+                });
+
+            modelBuilder.Entity("MessMate.API.Models.Domain.User", b =>
+                {
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
         }
