@@ -1,37 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MessMate.API.Models.Domain
+namespace MessMate.API.Models.Entity
 {
-    public class Meal
+    public class User
     {
         [Key]
         public Guid Id { get; set; }
 
         [Required]
-        public Guid SubscriptionId { get; set; }
+        [StringLength(100)]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(256)]
+        public string Password { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string MealType { get; set; }
-
-        [Required]
-        public DateTime Date { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Status { get; set; }
+        public string Role { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation properties
-        [ForeignKey("SubscriptionId")]
-        public Subscription Subscription { get; set; }
+        public ICollection<Subscription> Subscriptions { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; }
 
     }
 }

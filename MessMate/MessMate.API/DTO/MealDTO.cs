@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MessMate.API.Models.Domain.DTO
+namespace MessMate.API.DTO
 {
     public class MealDTO
     {

@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MessMate.API.Models.Domain
+namespace MessMate.API.Models.Entity
 {
-    public class Subscription
+    public class Feedback
     {
        [Key]
         public Guid Id { get; set; }
@@ -19,18 +19,11 @@ namespace MessMate.API.Models.Domain
         public Guid MessId { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Plan { get; set; }
+        [Range(0, 5)]
+        public float Rating { get; set; }
 
-        [Required]
-        public DateTime StartDate { get; set; }
-
-        [Required]
-        public DateTime EndDate { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Status { get; set; }
+        [StringLength(1000)]
+        public string Comment { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
@@ -40,6 +33,5 @@ namespace MessMate.API.Models.Domain
         public User User { get; set; }
         [ForeignKey("MessId")]
         public Mess Mess { get; set; }
-        public ICollection<Meal> Meals { get; set; }
     }
 }
